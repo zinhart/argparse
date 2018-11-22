@@ -16,10 +16,10 @@ namespace zinhart
 	class argparse
 	{
 	  public:
-		void register(const std::string key,  std::uint32_t values, const std::string expression, const std::string support, bool required = false);
-		void remove(const std::string key);
+		void register(const std::string arg,  const std::string expression, const std::string support, bool required = false);
+		void remove(const std::string arg);
 		template<class T>
-		  void get(std::string key, T & value, std::uint32_t nth_value = 0);//where 0 is no arg
+		  void get(std::string arg, T & value, std::uint32_t nth_value = 0);//where 0 is no arg
 		void process(std::int32_t argv, char ** argc);
 	  private:
 		std::string total_args;

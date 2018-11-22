@@ -57,47 +57,6 @@ endif()
 # threading library
 find_package(Threads REQUIRED)
 
-# mkl blas
-#set(MKL_USE_SINGLE_DYNAMIC_LIBRARY OFF CACHE BOOL "Use single dynamic library interface")
-#set(MKL_MULTI_THREADED OFF CACHE BOOL "Use multi-threading(intel tbb, omp etc)")
-#find_package(MKL REQUIRED)
-
-# find cuda package and set compute achitecture and nvcc compile flags
-if(BuildCuda)
-  find_package(CUDA REQUIRED)
-
-# check to see if CUDA_ENABLED was defined by another library using this one
-  string(REGEX MATCH "CUDA_ENABLED" result "${COMPILE_DEFINITIONS}" )
-  if(${result} MATCHES "CUDA_ENABLED")
-    # do nothing
-  else()
-	# set macro to conditionaly include headers define functions etc w.r.t gpu code
-	add_definitions(-DCUDA_ENABLED=true)
-  endif()
-
-# set nvcc flags for debugging
-  if("${CMAKE_BUILD_TYPE}" STREQUAL "DEBUG")
-	if(CUDA_NVCC_FLAGS STREQUAL "")
-	  set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -arch=sm_61; -G; -Wno-deprecated-gpu-targets;")
-	endif()
-# otherwise set release flags
-  else()
-	if(CUDA_NVCC_FLAGS STREQUAL "")
-	  set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -arch=sm_61 -Xptxas -O3")
-	endif()
-  endif()
-  
-  # set include paths
-  include_directories(. include include/argparse/ ${MKL_INCLUDE_DIR} ${CUDA_INCLUDE_DIRS} "${PROJECT_BINARY_DIR}")
-else()
-  string(REGEX MATCH "CUDA_ENABLED" result "${COMPILE_DEFINITIONS}")
-  if(${result} MATCHES "CUDA_ENABLED")
-  else()
-	add_definitions(-DCUDA_ENABLED=false)
-  endif()
-endif()
-
-
 # set cxx standard
 set(CMAKE_CXX_STANDARD 11)
 # force cxx standard

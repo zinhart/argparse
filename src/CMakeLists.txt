@@ -20,6 +20,3 @@ endif()
 
 #to do
 install(DIRECTORY ../include/argparse DESTINATION include)
-endif()
-
-

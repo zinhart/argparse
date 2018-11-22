@@ -13,5 +13,3 @@ add_test(
 NAME argparse_unit_tests
 COMMAND argparse_unit_tests
 )
-endif()
-

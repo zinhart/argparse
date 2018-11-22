@@ -1,32 +1,24 @@
-# Prerequisites
-*.d
+# All the crap cmake generates:
+Testing
+CMakeFiles
+cmake_install.cmake
+CTestTestfile.cmake
+CMakeLists.txt.user
+CMakeCache.txt
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
+# Build files:
+Debug
+Release
+build*
+release*
+debug*
 *.a
-*.lib
+*.o
 
-# Executables
-*.exe
-*.out
-*.app
+# IDE files:
+*.swp
+
+# Image Files
+*.bmp
+
+#exceptions

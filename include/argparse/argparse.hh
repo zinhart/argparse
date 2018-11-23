@@ -16,7 +16,15 @@ namespace zinhart
 	class argparse
 	{
 	  public:
+		argparse() = default;
+		argparse(const argparse &) = delete;
+		argparse(argparse &&) = delete;
+		const argparse & operator = (const argparse &) = delete;
+		const argparse & operator = (argparse &&) = delete;
+		~argparse() = default;
+
 		void process(std::int32_t argc, char ** argv);
+		void process(const std::string & total_args);
 		void add_argument(const std::string arg,  const std::string expression, const std::string support, bool required = false);
 		void remove_argument(const std::string arg);
 		template<class T>
@@ -25,9 +33,9 @@ namespace zinhart
 
 	  private:
 		std::string total_args;
-		std::unordered_map<std::string, bool> arg_and_req;
-		std::unordered_map<std::string, std::string> arg_and_regex;// maybe a multi_map
-		std::unordered_map<std::string, std::string> arg_and_support;
+		std::unordered_map<std::string, bool> argument_and_requirement;
+		std::unordered_map<std::string, std::string> argument_and_regex;// maybe a multi_map
+		std::unordered_map<std::string, std::string> argument_and_support;
 	};
   }// NAMESPACE PARSERS
 }// NAMESPACE ZINHART

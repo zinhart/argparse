@@ -34,8 +34,11 @@ namespace zinhart
 	  private:
 		std::string total_args;
 		std::unordered_map<std::string, bool> argument_and_requirement;
-		std::unordered_map<std::string, std::string> argument_and_regex;// maybe a multi_map
+		std::unordered_map<std::string, std::string> argument_and_regex;
 		std::unordered_map<std::string, std::string> argument_and_support;
+		// multimap because an arg may appear more than once and have more than one value (hence vector) and,
+		// multimap map gurantees duplicates are stored in insertion order which may be relevant
+		std::multimap<std::string, std::vector<std::string>> arg_values;
 	};
   }// NAMESPACE PARSERS
 }// NAMESPACE ZINHART

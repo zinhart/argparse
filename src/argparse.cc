@@ -11,25 +11,9 @@ namespace zinhart
 	{
 	 // parse args 
 	  std::string args;
-	  std::smatch matches;
 	  //convert args to one string
 	  std::for_each(argv, argv + argc, [&](const std::string & init){ args+= init;} );
-	  auto search_start = args.cbegin();
-	  
-	  for(std::uint32_t nth_arg{0}; nth_arg < argument_and_regex.size(); ++ nth_arg)
-	  {
-		auto it{argument_and_regex.begin()};
-		std::regex expr{it->second};
-		if(std::regex_search(search_start, args.cend(), matches, expr))
-		{
-		  for (auto match : matches)
-		  {
-			std::cout<<match<<" ";
-		  }
-		  search_start += matches.position() + matches.length();
-		  std::cout<<"\n";
-		}
-	  }
+	  process(args); 
 	}
 
 	void argparse::process(const std::string & argv)
@@ -49,7 +33,6 @@ namespace zinhart
 		  std::regex arg(it->first);
 		  std::regex expr{it->second};
 		  std::uint32_t arg_position_start;
-		  std::uint32_t arg_value_position_start;
 		  std::uint32_t length{0};
 
 		  // search relative to here
@@ -57,6 +40,7 @@ namespace zinhart
 		  // if the argument was found in argv
 		  while(std::regex_search(search_start, args_to_be_processed.cend(), matches, arg))
 		  {
+			std::vector<std::string> values;
 			length += it->first.length();
 			arg_position_start = matches.position();
 			for (auto match : matches)
@@ -68,7 +52,8 @@ namespace zinhart
 			if(std::regex_search(search_start + arg_position_start, args_to_be_processed.cend(), matches, expr))
 			{
 			  length += matches[0].length();
-			  arg_value_position_start = matches.position();
+			  for(std::uint32_t i = 1; i < matches.size(); ++i)
+				values.push_back(matches[i]);
 			  for (auto match : matches)
 			  {
 				std::cout<<match<<" ";
@@ -81,6 +66,7 @@ namespace zinhart
 			args_to_be_processed.erase(args_to_be_processed.begin() + arg_position_start, args_to_be_processed.begin() + arg_position_start + length);
 			std::cout<<"argv after: "<<args_to_be_processed<<"\n";
 			length = 0;
+			arg_values.insert({it->first,values});
 		  }
 		}// end for
 	  }

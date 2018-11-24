@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.1)
 
 # library name
-project(argparse)
+project(parser)
 
 # set build type to release by default
 if (NOT CMAKE_BUILD_TYPE)
@@ -11,22 +11,20 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 
 # for other libraries 
-set(ARGPARSE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE STRING "ARGPARSE INCLUDE DIRS") 
+set(PARSER_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE STRING "PARSER INCLUDE DIRS") 
 
 # useful macros to check against
-add_definitions(-DARGPARSE_ENABLED=true)
-add_definitions(-DARGPARSE_DISABLED=false)
+add_definitions(-DPARSER_ENABLED=true)
+add_definitions(-DPARSER_DISABLED=false)
 
 # for unit tests using google test
 option(BuildUnitTest "BuildUnitTest" ON)
 # for benchmarking using google bench
 option(BuildBenchmarks "BuildBenchmarks" ON)
-# for cuda
-option(BuildCuda "BuildCuda" ON)
 # library type
 option(BuildShared "BuildShared" OFF)
 # nesting protection
-option(ArgParseUseCodeCoverage "ArgParseUseCodeCoverage" ON)
+option(ParserUseCodeCoverage "ArgParseUseCodeCoverage" ON)
 # sanitizer support
 option(Sanitize "Sanitize" OFF)
 
@@ -167,13 +165,13 @@ if(BuildBenchmarks)
 endif()
 
 # code coverage
-if(ArgParseUseCodeCoverage)
+if(ParserUseCodeCoverage)
   if(CMAKE_COMPILER_IS_GNUCXX)
 	  include(CodeCoverage)
 	  # ignore extraneous files
 	  set(COVERAGE_LCOV_EXCLUDES '/usr/include/*' '${PROJECT_BINARY_DIR}/googlebench-src/*' '${PROJECT_BINARY_DIR}/googletest-src/*')
 	  SETUP_TARGET_FOR_COVERAGE_LCOV(NAME         ${PROJECT_NAME}_coverage 
-									 EXECUTABLE   ./unit_tests/argparse_unit_tests 
+									 EXECUTABLE   ./unit_tests/parser_unit_tests 
 									 DEPENDENCIES ${PROJECT_NAME})
   endif()
 endif()

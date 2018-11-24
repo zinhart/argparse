@@ -1,22 +1,22 @@
-set(argparse_lib 
-	argparse.cc
+set(parser_lib 
+	parser.cc
    )	
-add_library(argparse ${LIB_TYPE} ${argparse_lib})
+add_library(parser ${LIB_TYPE} ${parser_lib})
 
-target_include_directories(argparse PUBLIC ${ARGPARSE_INCLUDE_DIR})
+target_include_directories(parser PUBLIC ${PARSER_INCLUDE_DIR})
  
 target_link_libraries(
-					   argparse 
+					   parser 
 					   ${CMAKE_THREAD_LIBS_INIT}
 					  )
 
 if(BuildShared)
-  #install  libargparse.so to <cmake output dir>/${CMAKE_CURRENT_DIR}/
-  install(TARGETS argparse LIBRARY DESTINATION lib DESTINATION lib)
+  #install  libparser.so to <cmake output dir>/${CMAKE_CURRENT_DIR}/
+  install(TARGETS parser LIBRARY DESTINATION lib DESTINATION lib)
 else()
-  # install  libargparse.a to <cmake output dir>/${CMAKE_CURRENT_DIR}/
-  install(TARGETS argparse LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
+  # install  libparser.a to <cmake output dir>/${CMAKE_CURRENT_DIR}/
+  install(TARGETS parser LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 endif()
 
 #to do
-install(DIRECTORY ../include/argparse DESTINATION include)
+install(DIRECTORY ../include/parser DESTINATION include)

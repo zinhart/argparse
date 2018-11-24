@@ -1,4 +1,4 @@
-#include <argparse/argparse.hh>
+#include <parser/parser.hh>
 #include <algorithm>
 #include <iostream>
 #include <exception>
@@ -7,7 +7,7 @@ namespace zinhart
   namespace parsers
   {
 
-	void argparse::process(std::int32_t argc, char ** argv)
+	void parser::process(std::int32_t argc, char ** argv)
 	{
 	 // parse args 
 	  std::string args;
@@ -16,19 +16,19 @@ namespace zinhart
 	  process(args); 
 	}
 
-	void argparse::process(const std::string & argv)
+	void parser::process(const std::string & argv)
 	{
 	  try
 	  {
 		// parse args 
 		if(argv.size() == 0)
 		  throw std::logic_error("argv size cannot be 0");
-		if(argument_and_regex.size() == 0)
-		  throw std::logic_error("zero arguments to process were added");
+		if(token_and_regex.size() == 0)
+		  throw std::logic_error("zero tokens to process were added");
 		std::string args_to_be_processed{argv};
 		std::smatch matches;
-		// process all the cmdline arguments
-		for(auto it = argument_and_regex.begin(); it != argument_and_regex.end(); ++it)
+		// process all the cmdline tokens
+		for(auto it = token_and_regex.begin(); it != token_and_regex.end(); ++it)
 		{
 		  std::regex arg(it->first);
 		  std::regex expr{it->second};
@@ -37,7 +37,7 @@ namespace zinhart
 
 		  // search relative to here
 		  auto search_start = args_to_be_processed.cbegin();
-		  // if the argument was found in argv
+		  // if the token was found in argv
 		  while(std::regex_search(search_start, args_to_be_processed.cend(), matches, arg))
 		  {
 			std::vector<std::string> values;
@@ -48,7 +48,7 @@ namespace zinhart
 			  std::cout<<match<<" ";
 			}
 			
-			// now apply the regex to get the arguments value		  
+			// now apply the regex to get the tokens value		  
 			if(std::regex_search(search_start + arg_position_start, args_to_be_processed.cend(), matches, expr))
 			{
 			  length += matches[0].length();
@@ -62,11 +62,11 @@ namespace zinhart
 			}
 			std::cout<<"argv before : "<<args_to_be_processed<<"\n";
 			std::cout<<"length to chop: "<<length<<"\n";
-			// chop off argmument and argument value from args_to_be_processed	
+			// chop off argmument and token value from args_to_be_processed	
 			args_to_be_processed.erase(args_to_be_processed.begin() + arg_position_start, args_to_be_processed.begin() + arg_position_start + length);
 			std::cout<<"argv after: "<<args_to_be_processed<<"\n";
 			length = 0;
-			arg_values.insert({it->first,values});
+			token_values.insert({it->first,values});
 		  }
 		}// end for
 	  }
@@ -75,28 +75,28 @@ namespace zinhart
 		std::cerr<<e.what();
 	  }
 	}
-	void argparse::add_argument(const std::string arg,  const std::string expression, const std::string support, bool required)
+	void parser::add_token(const std::string arg,  const std::string expression, const std::string support, bool required)
 	{
-      argument_and_requirement[arg] = required;
-	  argument_and_regex[arg] = expression;
-	  argument_and_support[arg] = support;
+      token_and_requirement[arg] = required;
+	  token_and_regex[arg] = expression;
+	  token_and_support[arg] = support;
 	}
-	void argparse::remove_argument(const std::string arg)
+	void parser::remove_token(const std::string arg)
 	{
-      argument_and_requirement.erase(arg);
-	  argument_and_regex.erase(arg);
-	  argument_and_support.erase(arg);
+      token_and_requirement.erase(arg);
+	  token_and_regex.erase(arg);
+	  token_and_support.erase(arg);
 	}
-	void argparse::print_help()
+	void parser::print_support()
 	{
-	  for(const auto  & it : argument_and_support)
+	  for(const auto  & it : token_and_support)
 		std::cout<<it.first<< " " <<it.second<<"\n";
 	}
-	template<class T>
-	  void argparse::get(std::string arg, T & value, std::uint32_t nth_value)//where 0 is no arg
-	  {
-		// to do
-	  }
+	std::multimap<std::string, std::vector<std::string>> parser::get_parsed_tokens()const
+	{
+	  return token_values;
+	}
+
 
   }
 }

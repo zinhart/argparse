@@ -23,11 +23,11 @@ def add_cmake_args(cmake_cmd, args):
     else:
         cmake_cmd.append("-DBuildBenchmarks=OFF")
     if args.code_coverage == True:
-        cmake_cmd.append("-DArgParseUseCodeCoverage=ON")
+        cmake_cmd.append("-DParserUseCodeCoverage=ON")
         print("Got code_coverage")
     else:
         print("Not code_coverage")
-        cmake_cmd.append("-DArgParseUseCodeCoverage=OFF")
+        cmake_cmd.append("-DParserUseCodeCoverage=OFF")
 
 def handle_build(args):
     print(args)

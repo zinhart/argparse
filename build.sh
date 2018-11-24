@@ -1,2 +1,2 @@
-python3 parser.py build --threads $(nproc) --debug debug-parser --shared --code_coverage 
+python3 token_parser.py build --threads $(nproc) --debug debug-token-parser --shared --code_coverage 
 

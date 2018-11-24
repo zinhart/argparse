@@ -1,4 +1,4 @@
-#include <parser/parser.hh>
+#include <token_parser/token_parser.hh>
 #include <algorithm>
 #include <iostream>
 #include <exception>
@@ -7,7 +7,7 @@ namespace zinhart
   namespace parsers
   {
 
-	void parser::process(std::int32_t argc, char ** argv)
+	void token_parser::process(std::int32_t argc, char ** argv)
 	{
 	 // parse args 
 	  std::string args;
@@ -16,7 +16,7 @@ namespace zinhart
 	  process(args); 
 	}
 
-	void parser::process(const std::string & argv)
+	void token_parser::process(const std::string & argv)
 	{
 	  try
 	  {
@@ -75,24 +75,24 @@ namespace zinhart
 		std::cerr<<e.what();
 	  }
 	}
-	void parser::add_token(const std::string arg,  const std::string expression, const std::string support, bool required)
+	void token_parser::add_token(const std::string arg,  const std::string expression, const std::string support, bool required)
 	{
       token_and_requirement[arg] = required;
 	  token_and_regex[arg] = expression;
 	  token_and_support[arg] = support;
 	}
-	void parser::remove_token(const std::string arg)
+	void token_parser::remove_token(const std::string arg)
 	{
       token_and_requirement.erase(arg);
 	  token_and_regex.erase(arg);
 	  token_and_support.erase(arg);
 	}
-	void parser::print_support()
+	void token_parser::print_support()
 	{
 	  for(const auto  & it : token_and_support)
 		std::cout<<it.first<< " " <<it.second<<"\n";
 	}
-	std::multimap<std::string, std::vector<std::string>> parser::get_parsed_tokens()const
+	std::multimap<std::string, std::vector<std::string>> token_parser::get_parsed_tokens()const
 	{
 	  return token_values;
 	}

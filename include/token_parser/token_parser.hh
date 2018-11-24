@@ -13,15 +13,15 @@ namespace zinhart
  	  const std::string floating_point{"[-+]?[0-9]*.?[0-9]+([eE][-+]?[0-9]+)?"};
 	}
 	
-	class parser
+	class token_parser
 	{
 	  public:
-		parser() = default;
-		parser(const parser &) = delete;
-		parser(parser &&) = delete;
-		const parser & operator = (const parser &) = delete;
-		const parser & operator = (parser &&) = delete;
-		~parser() = default;
+		token_parser() = default;
+		token_parser(const token_parser &) = delete;
+		token_parser(token_parser &&) = delete;
+		const token_parser & operator = (const token_parser &) = delete;
+		const token_parser & operator = (token_parser &&) = delete;
+		~token_parser() = default;
 
 		void process(std::int32_t argc, char ** argv);
 		void process(const std::string & total_args);

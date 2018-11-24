@@ -1,16 +1,16 @@
-set(parser_unit_tests_src
+set(token_parser_unit_tests_src
  run_all.cc
- parser_test.cc
+ token_parser_test.cc
  )
-add_executable(parser_unit_tests ${parser_unit_tests_src})
+add_executable(token_parser_unit_tests ${token_parser_unit_tests_src})
 
-target_link_libraries(parser_unit_tests 
-					  parser
+target_link_libraries(token_parser_unit_tests 
+					  token_parser
 					  gtest
 					  #gmock_main # for google mock
 					  ${CMAKE_THREAD_LIBS_INIT}
 					 )
 add_test(
-NAME parser_unit_tests
-COMMAND parser_unit_tests
+NAME token_parser_unit_tests
+COMMAND token_parser_unit_tests
 )

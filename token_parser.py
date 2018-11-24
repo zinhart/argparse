@@ -27,7 +27,7 @@ def add_cmake_args(cmake_cmd, args):
         print("Got code_coverage")
     else:
         print("Not code_coverage")
-        cmake_cmd.append("-DParserUseCodeCoverage=OFF")
+        cmake_cmd.append("-DTokenParserUseCodeCoverage=OFF")
 
 def handle_build(args):
     print(args)

@@ -21,9 +21,7 @@ TEST(token_parser, parse_args)
   {
 	std::cout<<it->first<<" ";
 	for(auto inner_it = it->second.begin(); inner_it != it->second.end(); ++inner_it)
-	{
 	  std::cout<<*inner_it<<" ";
-	}
 	std::cout<<"\n";
   }
 }

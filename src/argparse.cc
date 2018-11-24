@@ -55,7 +55,7 @@ namespace zinhart
 		  // search relative to here
 		  auto search_start = args_to_be_processed.cbegin();
 		  // if the argument was found in argv
-		  if(std::regex_search(search_start, args_to_be_processed.cend(), matches, arg))
+		  while(std::regex_search(search_start, args_to_be_processed.cend(), matches, arg))
 		  {
 			length += it->first.length();
 			arg_position_start = matches.position();
@@ -75,11 +75,12 @@ namespace zinhart
 			  }
 			  std::cout<<"\n";
 			}
-		  std::cout<<"argv before : "<<args_to_be_processed<<"\n";
-		  std::cout<<"length to chop: "<<length<<"\n";
-		  // chop off argmument and argument value from args_to_be_processed	
-		  args_to_be_processed.erase(args_to_be_processed.begin() + arg_position_start, args_to_be_processed.begin() + arg_position_start + length);
-		  std::cout<<"argv after: "<<args_to_be_processed<<"\n";
+			std::cout<<"argv before : "<<args_to_be_processed<<"\n";
+			std::cout<<"length to chop: "<<length<<"\n";
+			// chop off argmument and argument value from args_to_be_processed	
+			args_to_be_processed.erase(args_to_be_processed.begin() + arg_position_start, args_to_be_processed.begin() + arg_position_start + length);
+			std::cout<<"argv after: "<<args_to_be_processed<<"\n";
+			length = 0;
 		  }
 		}// end for
 	  }

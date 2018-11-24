@@ -6,7 +6,6 @@ namespace zinhart
 {
   namespace parsers
   {
-
 	void token_parser::process(std::int32_t argc, char ** argv)
 	{
 	 // parse args 
@@ -52,8 +51,11 @@ namespace zinhart
 			if(std::regex_search(search_start + arg_position_start, args_to_be_processed.cend(), matches, expr))
 			{
 			  length += matches[0].length();
-			  for(std::uint32_t i = 1; i < matches.size(); ++i)
-				values.push_back(matches[i]);
+			  if(matches.size() > 1)
+				for(std::uint32_t i = 1; i < matches.size(); ++i)
+				  values.push_back(matches[i]);
+			  else
+				values.push_back(matches[0]);
 			  for (auto match : matches)
 			  {
 				std::cout<<match<<" ";

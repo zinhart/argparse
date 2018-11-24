@@ -16,4 +16,14 @@ TEST(token_parser, parse_args)
   ap.add_token("--batch_size", zinhart::parsers::expressions::pos_integer, "the number of cases to process before a weight update", true );
   ap.add_token("--layer", "(input|relu|sigmoid)([1-9][0-9]*)", "layer name and size", true);
   ap.process(argv);
+  auto token_values = ap.get_parsed_tokens();
+  for(auto it = token_values.begin(); it != token_values.end(); ++it)
+  {
+	std::cout<<it->first<<" ";
+	for(auto inner_it = it->second.begin(); inner_it != it->second.end(); ++inner_it)
+	{
+	  std::cout<<*inner_it<<" ";
+	}
+	std::cout<<"\n";
+  }
 }

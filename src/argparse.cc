@@ -1,6 +1,7 @@
 #include <argparse/argparse.hh>
 #include <algorithm>
 #include <iostream>
+#include <exception>
 namespace zinhart
 {
   namespace parsers
@@ -33,48 +34,59 @@ namespace zinhart
 
 	void argparse::process(const std::string & argv)
 	{
-	 // parse args 
-	  std::string args_to_be_preocessed{argv};
-	  std::smatch matches;
-	  auto search_start = args_to_be_preocessed.cbegin();
-	  std::cout<<argument_and_regex.size()<<"\n";
-
-	  // process all the cmdline arguments
-	  for(auto it = argument_and_regex.begin(); it != argument_and_regex.end(); ++it)
+	  try
 	  {
-		std::regex arg(it->first);
-		std::regex expr{it->second};
-		std::uint32_t arg_position_start;
-		std::uint32_t arg_value_position_start;
-		// if the argument was found in argv
-		if(std::regex_search(search_start, args_to_be_preocessed.cend(), matches, arg))
+		// parse args 
+		if(argv.size() == 0)
+		  throw std::logic_error("argv size cannot be 0");
+		if(argument_and_regex.size() == 0)
+		  throw std::logic_error("zero arguments to process were added");
+		std::string args_to_be_processed{argv};
+		std::smatch matches;
+		// process all the cmdline arguments
+		for(auto it = argument_and_regex.begin(); it != argument_and_regex.end(); ++it)
 		{
-		  arg_position_start = matches.position();
-		  for (auto match : matches)
+		  std::regex arg(it->first);
+		  std::regex expr{it->second};
+		  std::uint32_t arg_position_start;
+		  std::uint32_t arg_value_position_start;
+		  std::uint32_t length{0};
+
+		  // search relative to here
+		  auto search_start = args_to_be_processed.cbegin();
+		  // if the argument was found in argv
+		  if(std::regex_search(search_start, args_to_be_processed.cend(), matches, arg))
 		  {
-			std::cout<<match<<" ";
-		  }
-		  
-		  // now apply the regex to get the arguments value		  
-		  if(std::regex_search(search_start, args_to_be_preocessed.cend(), matches, expr))
-		  {
-			arg_value_position_start = matches.position();
+			length += it->first.length();
+			arg_position_start = matches.position();
 			for (auto match : matches)
 			{
 			  std::cout<<match<<" ";
 			}
-			std::cout<<"\n";
-
-
-
+			
+			// now apply the regex to get the arguments value		  
+			if(std::regex_search(search_start + arg_position_start, args_to_be_processed.cend(), matches, expr))
+			{
+			  length += matches[0].length();
+			  arg_value_position_start = matches.position();
+			  for (auto match : matches)
+			  {
+				std::cout<<match<<" ";
+			  }
+			  std::cout<<"\n";
+			}
+		  std::cout<<"argv before : "<<args_to_be_processed<<"\n";
+		  std::cout<<"length to chop: "<<length<<"\n";
+		  // chop off argmument and argument value from args_to_be_processed	
+		  args_to_be_processed.erase(args_to_be_processed.begin() + arg_position_start, args_to_be_processed.begin() + arg_position_start + length);
+		  std::cout<<"argv after: "<<args_to_be_processed<<"\n";
 		  }
-		std::cout<<"argv before : "<<args_to_be_preocessed<<"\n";
-		// chop off argmument and argument value from args_to_be_preocessed	
-		args_to_be_preocessed = args_to_be_preocessed.substr(it->first.length() + arg_value_position_start - 2);// extracts the argument leaving the remaing args to be processed
-		std::cout<<"argv after: "<<args_to_be_preocessed<<"\n";
-		}
-
-	  }// end for
+		}// end for
+	  }
+	  catch(std::exception & e)
+	  {
+		std::cerr<<e.what();
+	  }
 	}
 	void argparse::add_argument(const std::string arg,  const std::string expression, const std::string support, bool required)
 	{

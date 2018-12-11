@@ -42,11 +42,12 @@ namespace zinhart
 			std::vector<std::string> values;
 			length += it->first.length();
 			arg_position_start = matches.position();
+			/*
 			for (auto match : matches)
 			{
 			  std::cout<<match<<" ";
 			}
-			
+			*/
 			// now apply the regex to get the tokens value		  
 			if(std::regex_search(search_start + arg_position_start, args_to_be_processed.cend(), matches, expr))
 			{
@@ -56,17 +57,20 @@ namespace zinhart
 				  values.push_back(matches[i]);
 			  else
 				values.push_back(matches[0]);
+			  /*
 			  for (auto match : matches)
 			  {
 				std::cout<<match<<" ";
 			  }
 			  std::cout<<"\n";
+			  */
 			}
+			/*
 			std::cout<<"argv before : "<<args_to_be_processed<<"\n";
-			std::cout<<"length to chop: "<<length<<"\n";
+			std::cout<<"length to chop: "<<length<<"\n";*/
 			// chop off argmument and token value from args_to_be_processed	
 			args_to_be_processed.erase(args_to_be_processed.begin() + arg_position_start, args_to_be_processed.begin() + arg_position_start + length);
-			std::cout<<"argv after: "<<args_to_be_processed<<"\n";
+		/*	std::cout<<"argv after: "<<args_to_be_processed<<"\n";*/
 			length = 0;
 			token_values.insert({it->first,values});
 		  }
